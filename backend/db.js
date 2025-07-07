@@ -1,7 +1,7 @@
 const { default: mongoose } = require('mongoose');
 
 
-require('dotenv').config();
+require("dotenv").config();
 mongoose.connect(process.env.DB_URl)
 
 const userSchema= new mongoose.Schema({
@@ -33,6 +33,6 @@ const userSchema= new mongoose.Schema({
     }
    
 })
-const User = mongoose.model('User',usersSchema)
+const User = mongoose.model('User',userSchema)
 
-    module.exports = {User};
+module.exports = {User};
