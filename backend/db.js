@@ -5,12 +5,34 @@ require('dotenv').config();
 mongoose.connect(process.env.DB_URl)
 
 const userSchema= new mongoose.Schema({
-    username:String,
-    password:String,
-    firstName:String,
-    lastName:String
+    username:{
+        type:String,
+        required:true,
+        unique:true,
+        trim:true,
+        lowercase:true,
+        minLength:3,
+        maxLength:30
+    },
+    password:{
+        type:String,
+        required:true,
+        minLength:6
+    },
+    firstName:{
+        type:String,
+        trim:true,
+        minLength:3,
+        maxLength:15,
+    },
+    lastName:{
+        type:String,
+        trim:true,
+        minLength:3,
+        maxLength:15
+    }
    
 })
-const user = mongoose.model('user',usersSchema)
+const User = mongoose.model('User',usersSchema)
 
-module.exports = user;
+    module.exports = {User};
