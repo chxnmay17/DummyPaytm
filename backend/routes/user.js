@@ -1,6 +1,14 @@
-const express= require(express);
-const router = express.router();
+const express= require("express");
+const router = express.Router();
 
-module.exports={
-    router
-}
+
+
+router.post("/signup",(req,res)=>{
+    res.json({
+        msg :"HEllo"
+    })
+})
+
+
+
+module.exports=router;

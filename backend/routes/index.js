@@ -1,5 +1,11 @@
-const express=require(express);
+const express=require("express");
+const userRouter=require("../routes/user")
+
 const router=express.Router();
-module.exports={
-    router
-};
+
+router.use("/user",userRouter);
+
+
+
+
+module.exports=router;
