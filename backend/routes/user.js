@@ -3,6 +3,7 @@ const router = express.Router();
 const zod= require("zod");
 const {User} =require("../db");
 const jwt=require("jsonwebtoken");
+const authMiddleware=require("../middleware")
 require("dotenv").config();
 
 
@@ -72,7 +73,7 @@ router.post("/signin", async (req, res) => {
     if (user) {
         const token = jwt.sign({
             userId: user._id
-        }, JWT_SECRET);
+        }, process.env.JWT_SECRET);
   
         res.json({
             token: token
@@ -86,5 +87,26 @@ router.post("/signin", async (req, res) => {
     })
 })
 
+const updateZodSchema= zod.object({
+    password:zod.string().min(6).max(20).optional(),
+    firstName:zod.string().min(3).max(20).trim().optional(),
+    lastName:zod.string().min(6).max(20).trim().optional()
+})
+router.put("/",authMiddleware,async(req,res)=>{
+    const {success}=updateZodSchema.safeParse(req.body);
+    if(!success){
+        return res.json({
+            msg:"Not Authenticated"
+        })
+    
+    }
+    const updateDone=await User.updateOne({ _id: req.userId }, req.body);
+    if(updateDone){
+        return res.json({
+            msg:"Updated Successfully"
+        });
+    }
+
+})
 
 module.exports=router;
