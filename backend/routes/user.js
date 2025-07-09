@@ -42,7 +42,7 @@ router.post("/signup",async(req,res)=>{
 
     const initializeUserBalance=await Accounts.create({
         userId:userId,
-        balance:100000
+        balance:1+ Math.random()*100000
     })
 
     const token=jwt.sign({userId},process.env.JWT_SECRET)
