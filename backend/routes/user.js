@@ -1,9 +1,10 @@
 const express= require("express");
 const router = express.Router();
 const zod= require("zod");
-const {User} =require("../db");
+const {User,Accounts} =require("../db");
 const jwt=require("jsonwebtoken");
-const authMiddleware=require("../middleware")
+const authMiddleware=require("../middleware");
+const { error } = require("console");
 require("dotenv").config();
 
 
@@ -36,7 +37,14 @@ router.post("/signup",async(req,res)=>{
         return;
     }
     const user=await User.create(data);
+    
     const userId=user._id;
+
+    const initializeUserBalance=await Accounts.create({
+        userId:userId,
+        balance:100000
+    })
+
     const token=jwt.sign({userId},process.env.JWT_SECRET)
     res.json({
         msg:"User created Successfully",
@@ -47,6 +55,7 @@ router.post("/signup",async(req,res)=>{
         // Send a generic error message to the client without revealing sensitive details
         res.status(500).json({
           msg: "An error occurred while processing your request. Please try again later.",
+          msg1:err
         });
       }
 
